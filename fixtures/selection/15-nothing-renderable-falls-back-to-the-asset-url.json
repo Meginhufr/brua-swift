@@ -1,0 +1,26 @@
+{
+  "description": "No variant has a supported type: the single URL, which the CDN negotiates.",
+  "asset": {
+    "id": "rive-only",
+    "version": 1,
+    "url": "https://cdn.test/assets/rive-only/1",
+    "width": 100,
+    "height": 100,
+    "alt": "",
+    "variants": [
+      {
+        "type": "application/x-rive",
+        "url": "https://cdn.test/assets/rive-only/1/default.riv"
+      }
+    ]
+  },
+  "client": {
+    "supportedTypes": [
+      "image/png"
+    ],
+    "colorScheme": "light",
+    "reducedMotion": false,
+    "scale": 1
+  },
+  "expected": "https://cdn.test/assets/rive-only/1"
+}

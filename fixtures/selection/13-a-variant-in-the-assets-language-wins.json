@@ -1,0 +1,34 @@
+{
+  "description": "The asset's lang is nb, so the nb variant over the one without a language.",
+  "asset": {
+    "id": "banner",
+    "version": 1,
+    "url": "https://cdn.test/assets/banner/1",
+    "width": 320,
+    "height": 100,
+    "alt": "God jul",
+    "lang": "nb",
+    "variants": [
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/banner/1/neutral@2x.png",
+        "scale": 2
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/banner/1/nb@2x.png",
+        "lang": "nb",
+        "scale": 2
+      }
+    ]
+  },
+  "client": {
+    "supportedTypes": [
+      "image/png"
+    ],
+    "colorScheme": "light",
+    "reducedMotion": false,
+    "scale": 2
+  },
+  "expected": "https://cdn.test/assets/banner/1/nb@2x.png"
+}

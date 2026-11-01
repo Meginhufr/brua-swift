@@ -1,0 +1,16 @@
+name: CI
+
+# Swift Package Manager installs the package by its tag; a tag vX.Y.Z is the release, and this is its check.
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The shared selection fixtures and the SwiftUI view.
+      - run: swift test

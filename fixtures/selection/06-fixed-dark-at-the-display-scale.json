@@ -1,0 +1,96 @@
+{
+  "description": "Dark scheme at 2x.",
+  "asset": {
+    "id": "icon",
+    "version": 1,
+    "url": "https://cdn.test/assets/icon/1",
+    "width": 64,
+    "height": 64,
+    "alt": "Ikon",
+    "lang": "nb",
+    "variants": [
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/icon/1/light@1x.avif",
+        "prefersColorScheme": "light",
+        "scale": 1
+      },
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/icon/1/light@2x.avif",
+        "prefersColorScheme": "light",
+        "scale": 2
+      },
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/icon/1/light@3x.avif",
+        "prefersColorScheme": "light",
+        "scale": 3
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/icon/1/light@1x.png",
+        "prefersColorScheme": "light",
+        "scale": 1
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/icon/1/light@2x.png",
+        "prefersColorScheme": "light",
+        "scale": 2
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/icon/1/light@3x.png",
+        "prefersColorScheme": "light",
+        "scale": 3
+      },
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/icon/1/dark@1x.avif",
+        "prefersColorScheme": "dark",
+        "scale": 1
+      },
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/icon/1/dark@2x.avif",
+        "prefersColorScheme": "dark",
+        "scale": 2
+      },
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/icon/1/dark@3x.avif",
+        "prefersColorScheme": "dark",
+        "scale": 3
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/icon/1/dark@1x.png",
+        "prefersColorScheme": "dark",
+        "scale": 1
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/icon/1/dark@2x.png",
+        "prefersColorScheme": "dark",
+        "scale": 2
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/icon/1/dark@3x.png",
+        "prefersColorScheme": "dark",
+        "scale": 3
+      }
+    ]
+  },
+  "client": {
+    "supportedTypes": [
+      "image/avif",
+      "image/png"
+    ],
+    "colorScheme": "dark",
+    "reducedMotion": false,
+    "scale": 2
+  },
+  "expected": "https://cdn.test/assets/icon/1/dark@2x.avif"
+}

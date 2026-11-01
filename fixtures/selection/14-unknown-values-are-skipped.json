@@ -1,0 +1,34 @@
+{
+  "description": "A value the client doesn't know (a future color scheme) makes the variant unusable (SPEC.md 14).",
+  "asset": {
+    "id": "tone",
+    "version": 1,
+    "url": "https://cdn.test/assets/tone/1",
+    "width": 64,
+    "height": 64,
+    "alt": "Tone",
+    "lang": "nb",
+    "variants": [
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/tone/1/sepia@2x.png",
+        "prefersColorScheme": "sepia",
+        "scale": 2
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/tone/1/default@2x.png",
+        "scale": 2
+      }
+    ]
+  },
+  "client": {
+    "supportedTypes": [
+      "image/png"
+    ],
+    "colorScheme": "light",
+    "reducedMotion": false,
+    "scale": 2
+  },
+  "expected": "https://cdn.test/assets/tone/1/default@2x.png"
+}

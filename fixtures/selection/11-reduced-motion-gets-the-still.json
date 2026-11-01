@@ -1,0 +1,40 @@
+{
+  "description": "Reduce Motion: the still, even though Lottie is supported.",
+  "asset": {
+    "id": "spinner",
+    "version": 1,
+    "url": "https://cdn.test/assets/spinner/1",
+    "width": 120,
+    "height": 120,
+    "alt": "Lasteanimasjon",
+    "lang": "nb",
+    "variants": [
+      {
+        "type": "application/x-lottie+json",
+        "url": "https://cdn.test/assets/spinner/1/default.json"
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/spinner/1/default-still@1x.png",
+        "prefersReducedMotion": "reduce",
+        "scale": 1
+      },
+      {
+        "type": "image/png",
+        "url": "https://cdn.test/assets/spinner/1/default-still@2x.png",
+        "prefersReducedMotion": "reduce",
+        "scale": 2
+      }
+    ]
+  },
+  "client": {
+    "supportedTypes": [
+      "application/x-lottie+json",
+      "image/png"
+    ],
+    "colorScheme": "light",
+    "reducedMotion": true,
+    "scale": 2
+  },
+  "expected": "https://cdn.test/assets/spinner/1/default-still@2x.png"
+}

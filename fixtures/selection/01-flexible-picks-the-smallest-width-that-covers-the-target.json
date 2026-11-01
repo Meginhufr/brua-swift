@@ -1,0 +1,86 @@
+{
+  "description": "Target 100 CSS px at 3x needs 300 physical pixels: the smallest width at or above is 320.",
+  "asset": {
+    "id": "photo",
+    "version": 1,
+    "url": "https://cdn.test/assets/photo/1",
+    "width": 1600,
+    "height": 1067,
+    "alt": "Rødt ullpledd",
+    "lang": "nb",
+    "variants": [
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/photo/1/160.avif",
+        "pixelWidth": 160
+      },
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/photo/1/320.avif",
+        "pixelWidth": 320
+      },
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/photo/1/640.avif",
+        "pixelWidth": 640
+      },
+      {
+        "type": "image/avif",
+        "url": "https://cdn.test/assets/photo/1/1280.avif",
+        "pixelWidth": 1280
+      },
+      {
+        "type": "image/webp",
+        "url": "https://cdn.test/assets/photo/1/160.webp",
+        "pixelWidth": 160
+      },
+      {
+        "type": "image/webp",
+        "url": "https://cdn.test/assets/photo/1/320.webp",
+        "pixelWidth": 320
+      },
+      {
+        "type": "image/webp",
+        "url": "https://cdn.test/assets/photo/1/640.webp",
+        "pixelWidth": 640
+      },
+      {
+        "type": "image/webp",
+        "url": "https://cdn.test/assets/photo/1/1280.webp",
+        "pixelWidth": 1280
+      },
+      {
+        "type": "image/jpeg",
+        "url": "https://cdn.test/assets/photo/1/160.jpg",
+        "pixelWidth": 160
+      },
+      {
+        "type": "image/jpeg",
+        "url": "https://cdn.test/assets/photo/1/320.jpg",
+        "pixelWidth": 320
+      },
+      {
+        "type": "image/jpeg",
+        "url": "https://cdn.test/assets/photo/1/640.jpg",
+        "pixelWidth": 640
+      },
+      {
+        "type": "image/jpeg",
+        "url": "https://cdn.test/assets/photo/1/1280.jpg",
+        "pixelWidth": 1280
+      }
+    ]
+  },
+  "client": {
+    "supportedTypes": [
+      "image/avif",
+      "image/webp",
+      "image/jpeg"
+    ],
+    "colorScheme": "light",
+    "reducedMotion": false,
+    "scale": 3,
+    "targetWidth": 100
+  },
+  "expected": "https://cdn.test/assets/photo/1/320.avif"
+}
