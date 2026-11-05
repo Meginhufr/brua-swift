@@ -3,7 +3,7 @@ import Testing
 @testable import BruaKit
 
 /// A value behind a lock, for state the stub and the tests share across threads.
-private final class Locked<Value>: @unchecked Sendable {
+final class Locked<Value>: @unchecked Sendable {
     private let lock = NSLock()
     private var value: Value
     init(_ value: Value) { self.value = value }
@@ -12,7 +12,7 @@ private final class Locked<Value>: @unchecked Sendable {
 
 /// Answers `/icon.json` with the icon's JSON and anything else with 404, and fails as a lost connection on the
 /// hosts in `failing`. Remembers what was asked for per host, since tests run in parallel.
-private final class EdgeStub: URLProtocol {
+final class EdgeStub: URLProtocol {
     static let requests = Locked<[String: [URL]]>([:])
     static let failing = Locked<Set<String>>([])
 
@@ -42,13 +42,13 @@ private final class EdgeStub: URLProtocol {
 }
 
 /// A clock the test moves by hand.
-private final class Clock: @unchecked Sendable {
+final class Clock: @unchecked Sendable {
     private let time = Locked(Date(timeIntervalSince1970: 1_800_000_000))
     var now: Date { time.withLock { $0 } }
     func advance(_ seconds: TimeInterval) { time.withLock { $0 += seconds } }
 }
 
-private func client(_ host: String, lang: String? = "nb", clock: Clock = Clock(), languages: [String] = ["nb-NO", "en"]) -> BruaClient {
+func client(_ host: String, lang: String? = "nb", clock: Clock = Clock(), languages: [String] = ["nb-NO", "en"]) -> BruaClient {
     let configuration = URLSessionConfiguration.ephemeral
     configuration.protocolClasses = [EdgeStub.self]
     return BruaClient(base: URL(string: "https://\(host)/assets/0f8fad5b-d9cb-469f-a165-70867728950e")!, lang: lang,

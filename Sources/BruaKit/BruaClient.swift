@@ -18,7 +18,7 @@ public struct BruaClient: Sendable {
     private let preferredLanguages: @Sendable () -> [String]
     private let now: @Sendable () -> Date
 
-    public init(base: URL, lang: String? = nil, session: URLSession = .shared) {
+    public init(base: URL, lang: String? = nil, session: URLSession = .brua) {
         self.init(base: base, lang: lang, session: session, preferredLanguages: { Locale.preferredLanguages }, now: { Date() })
     }
 
@@ -62,6 +62,23 @@ public struct BruaClient: Sendable {
     /// to draw at once while `asset(_:)` checks for a newer release.
     public func cachedAsset(_ id: String) -> AssetResponse? {
         store.entry(url(for: id))?.asset
+    }
+
+    /// The file each id's current release draws with in a box of this size, chosen as `BruaImage` chooses it: for an
+    /// app's own loader to prefetch. Ids with nothing released, or that can't be read, are left out.
+    public func fileURLs(for ids: [String], state: ClientState, boxWidth: Double? = nil, boxHeight: Double? = nil,
+                         objectFit: String? = nil) async -> [String: URL] {
+        await prefetch(ids)
+        var urls: [String: URL] = [:]
+        for id in Set(ids) {
+            guard let asset = cachedAsset(id) else { continue }
+            var client = state
+            if let boxWidth {
+                client.targetWidth = BruaLayout.targetWidth(asset: asset, boxWidth: boxWidth, boxHeight: boxHeight, objectFit: objectFit)
+            }
+            urls[id] = VariantSelector.url(for: asset, client: client)
+        }
+        return urls
     }
 
     /// Reads these ids at the same time, so a list's images draw at once when its cells appear.
@@ -134,5 +151,22 @@ final class AssetStore: @unchecked Sendable {
             lock.withLock { reads[url] = nil }
             throw error
         }
+    }
+}
+
+public extension URLSession {
+    /// BruaKit's own session, for the asset JSON and the files: a URL cache in `Library/Caches/BruaKit`, apart from
+    /// `URLSession.shared`'s, so Brua's files and an app's other responses don't push each other out. The files are
+    /// immutable, so a cached one is served without the network, offline too and after a relaunch; the system may clear
+    /// the folder when storage runs low, since everything in it can be fetched again.
+    static let brua: URLSession = {
+        let configuration = URLSessionConfiguration.default
+        configuration.urlCache = URLCache(memoryCapacity: 4 * 1024 * 1024, diskCapacity: 200 * 1024 * 1024, directory: bruaCacheDirectory)
+        return URLSession(configuration: configuration)
+    }()
+
+    /// Where BruaKit's URL cache keeps its files.
+    static var bruaCacheDirectory: URL {
+        FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0].appending(path: "BruaKit")
     }
 }
