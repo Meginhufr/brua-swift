@@ -6,8 +6,9 @@ import SwiftUI
 /// Animations show their still; apps render animation types themselves (SPEC.md 7.2).
 ///
 /// Given an id instead of an asset, the current release is read from the edge through a `BruaClient`, so a
-/// merge reaches this image within a minute with no backend involved; the placeholder shows until it has
-/// loaded, and when nothing is released under the id.
+/// merge reaches this image within a minute with no backend involved. A release the client has read before draws
+/// on the first frame, so a cell scrolled back into view doesn't flash its placeholder, and it stays when a newer
+/// one can't be read; the placeholder shows until the first release has loaded, and when nothing is released.
 public struct BruaImage<Placeholder: View>: View {
     private enum Source {
         case embedded(AssetResponse)
@@ -37,6 +38,7 @@ public struct BruaImage<Placeholder: View>: View {
         self.source = .reference(id, client)
         self.supportedTypes = supportedTypes
         self.placeholder = placeholder()
+        self._loaded = State(initialValue: client.cachedAsset(id))
     }
 
     private var asset: AssetResponse? {
@@ -60,6 +62,9 @@ public struct BruaImage<Placeholder: View>: View {
         }
         .task(id: referenceId) {
             guard case .reference(let id, let client) = source else { return }
+            loaded = client.cachedAsset(id)
+            // The client keeps the last known release when the edge can't be reached, so nil here means nothing
+            // is released under the id, or nothing has ever been read of it.
             loaded = try? await client.asset(id)
         }
     }

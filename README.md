@@ -12,8 +12,9 @@ Add it with Swift Package Manager, in Xcode (File â†’ Add Package Dependenciesâ€
 import BruaKit
 
 // Your backend passes asset ids on; the app reads each asset's current release from the edge, with no key.
-// One client per app, with your organization's asset prefix. URLSession's cache keeps each asset for the
-// edge's minute, and a merge in Brua reaches the screen within that minute with no release of yours.
+// One client per app, with your organization's asset prefix. It remembers every release it reads: from memory
+// for the edge's minute, read again after that, kept offline. A merge in Brua reaches the screen within that
+// minute with no release of yours.
 let brua = BruaClient(base: URL(string: "https://cdn.brua.dev/assets/<your organization id>")!)
 
 // Follows dark mode, Reduce Motion and the display scale; alt text is the VoiceOver label.
