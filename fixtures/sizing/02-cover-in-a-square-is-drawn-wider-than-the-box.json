@@ -1,0 +1,13 @@
+{
+  "description": "A 4:3 photo filling a square box is drawn 400 wide, 50 cropped off each side.",
+  "asset": {
+    "width": 960,
+    "height": 720,
+    "objectFit": "cover"
+  },
+  "box": {
+    "width": 300,
+    "height": 300
+  },
+  "expected": 400
+}

@@ -5,6 +5,11 @@ import SwiftUI
 /// as they change, alt text becomes the VoiceOver label, and decorative assets are hidden from VoiceOver.
 /// Animations show their still; apps render animation types themselves (SPEC.md 7.2).
 ///
+/// The asset's `objectFit` decides the shape: `contain` takes the asset's proportions, as an image with
+/// `.aspectRatio(contentMode: .fit)`; `cover` fills the frame you give it and crops around the asset's
+/// `objectPosition`, choosing a file sharp enough for the size it is drawn at. `objectFit:` and `objectPosition:`
+/// override the asset's.
+///
 /// Given an id instead of an asset, the current release is read from the edge through a `BruaClient`, so a
 /// merge reaches this image within a minute with no backend involved. A release the client has read before draws
 /// on the first frame, so a cell scrolled back into view doesn't flash its placeholder, and it stays when a newer
@@ -17,6 +22,8 @@ public struct BruaImage<Placeholder: View>: View {
 
     private let source: Source
     private let supportedTypes: [String]
+    private let objectFit: String?
+    private let objectPosition: String?
     private let placeholder: Placeholder
 
     @State private var loaded: AssetResponse?
@@ -26,17 +33,21 @@ public struct BruaImage<Placeholder: View>: View {
 
     /// The asset as your backend embedded it: a snapshot of one release.
     public init(_ asset: AssetResponse, supportedTypes: [String] = ClientState.defaultTypes,
-                @ViewBuilder placeholder: () -> Placeholder) {
+                objectFit: String? = nil, objectPosition: String? = nil, @ViewBuilder placeholder: () -> Placeholder) {
         self.source = .embedded(asset)
         self.supportedTypes = supportedTypes
+        self.objectFit = objectFit
+        self.objectPosition = objectPosition
         self.placeholder = placeholder()
     }
 
     /// The asset with this id, in its current release.
     public init(id: String, client: BruaClient, supportedTypes: [String] = ClientState.defaultTypes,
-                @ViewBuilder placeholder: () -> Placeholder) {
+                objectFit: String? = nil, objectPosition: String? = nil, @ViewBuilder placeholder: () -> Placeholder) {
         self.source = .reference(id, client)
         self.supportedTypes = supportedTypes
+        self.objectFit = objectFit
+        self.objectPosition = objectPosition
         self.placeholder = placeholder()
         self._loaded = State(initialValue: client.cachedAsset(id))
     }
@@ -70,6 +81,21 @@ public struct BruaImage<Placeholder: View>: View {
     }
 
     private func picture(_ asset: AssetResponse) -> some View {
+        Group {
+            if BruaLayout.objectFit(of: asset, override: objectFit) == .cover {
+                cover(asset)
+            } else {
+                contain(asset)
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(asset.alt))
+        .accessibilityAddTraits(.isImage)
+        .accessibilityHidden(asset.isDecorative)
+    }
+
+    /// The asset's own proportions, the picture fitted in them.
+    private func contain(_ asset: AssetResponse) -> some View {
         GeometryReader { geometry in
             AsyncImage(url: url(for: asset, width: geometry.size.width)) { phase in
                 if let image = phase.image {
@@ -80,10 +106,25 @@ public struct BruaImage<Placeholder: View>: View {
             }
         }
         .aspectRatio(CGFloat(asset.width) / CGFloat(max(asset.height, 1)), contentMode: .fit)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(asset.alt))
-        .accessibilityAddTraits(.isImage)
-        .accessibilityHidden(asset.isDecorative)
+    }
+
+    /// The frame the view is given, filled: the picture drawn at the size that fills it and placed at the position, as
+    /// CSS object-position places it, then clipped. SwiftUI's own `.fill` would always crop from the centre.
+    private func cover(_ asset: AssetResponse) -> some View {
+        GeometryReader { geometry in
+            let box = geometry.size
+            let rect = BruaLayout.rect(for: asset, in: box, objectFit: ObjectFit.cover.rawValue, objectPosition: objectPosition)
+            let width = BruaLayout.targetWidth(asset: asset, boxWidth: box.width, boxHeight: box.height, objectFit: ObjectFit.cover.rawValue)
+            AsyncImage(url: url(for: asset, width: width)) { phase in
+                if let image = phase.image {
+                    image.resizable().frame(width: rect.width, height: rect.height).offset(x: rect.minX, y: rect.minY)
+                } else {
+                    placeholder.frame(width: box.width, height: box.height)
+                }
+            }
+            .frame(width: box.width, height: box.height, alignment: .topLeading)
+        }
+        .clipped()
     }
 
     private func url(for asset: AssetResponse, width: CGFloat) -> URL {
@@ -97,12 +138,12 @@ public struct BruaImage<Placeholder: View>: View {
 }
 
 public extension BruaImage where Placeholder == Color {
-    init(_ asset: AssetResponse, supportedTypes: [String] = ClientState.defaultTypes) {
-        self.init(asset, supportedTypes: supportedTypes) { Color.secondary.opacity(0.1) }
+    init(_ asset: AssetResponse, supportedTypes: [String] = ClientState.defaultTypes, objectFit: String? = nil, objectPosition: String? = nil) {
+        self.init(asset, supportedTypes: supportedTypes, objectFit: objectFit, objectPosition: objectPosition) { Color.secondary.opacity(0.1) }
     }
 
-    init(id: String, client: BruaClient, supportedTypes: [String] = ClientState.defaultTypes) {
-        self.init(id: id, client: client, supportedTypes: supportedTypes) { Color.secondary.opacity(0.1) }
+    init(id: String, client: BruaClient, supportedTypes: [String] = ClientState.defaultTypes, objectFit: String? = nil, objectPosition: String? = nil) {
+        self.init(id: id, client: client, supportedTypes: supportedTypes, objectFit: objectFit, objectPosition: objectPosition) { Color.secondary.opacity(0.1) }
     }
 }
 #endif

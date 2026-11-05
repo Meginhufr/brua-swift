@@ -1,0 +1,13 @@
+{
+  "description": "Same proportions: nothing is cropped.",
+  "asset": {
+    "width": 960,
+    "height": 720,
+    "objectFit": "cover"
+  },
+  "box": {
+    "width": 300,
+    "height": 225
+  },
+  "expected": 300
+}

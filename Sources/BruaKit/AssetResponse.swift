@@ -11,8 +11,13 @@ public struct AssetResponse: Codable, Hashable, Sendable {
     public let alt: String
     public let lang: String?
     public let variants: [AssetVariant]
+    /// How a layout's box of another shape holds the asset, as CSS object-fit: "contain" or "cover".
+    public let objectFit: String?
+    /// Where it sits in the box, as CSS object-position: "50% 35%", the point a cover crop keeps in view.
+    public let objectPosition: String?
 
-    public init(id: String, version: Int, url: URL, width: Int, height: Int, alt: String, lang: String?, variants: [AssetVariant]) {
+    public init(id: String, version: Int, url: URL, width: Int, height: Int, alt: String, lang: String?, variants: [AssetVariant],
+                objectFit: String? = nil, objectPosition: String? = nil) {
         self.id = id
         self.version = version
         self.url = url
@@ -21,6 +26,8 @@ public struct AssetResponse: Codable, Hashable, Sendable {
         self.alt = alt
         self.lang = lang
         self.variants = variants
+        self.objectFit = objectFit
+        self.objectPosition = objectPosition
     }
 
     public var isDecorative: Bool { alt.isEmpty }

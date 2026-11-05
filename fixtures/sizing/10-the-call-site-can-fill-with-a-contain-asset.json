@@ -1,0 +1,14 @@
+{
+  "description": "An override of cover wins over the asset's contain.",
+  "asset": {
+    "width": 960,
+    "height": 720,
+    "objectFit": "contain"
+  },
+  "box": {
+    "width": 300,
+    "height": 300
+  },
+  "objectFit": "cover",
+  "expected": 400
+}

@@ -1,0 +1,12 @@
+{
+  "description": "Before layout there is no height yet: the box width, as without the fill.",
+  "asset": {
+    "width": 960,
+    "height": 720,
+    "objectFit": "cover"
+  },
+  "box": {
+    "width": 300
+  },
+  "expected": 300
+}

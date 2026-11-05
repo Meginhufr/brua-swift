@@ -1,0 +1,13 @@
+{
+  "description": "A 2:1 banner filling a 1:2 box is drawn four times the box width.",
+  "asset": {
+    "width": 800,
+    "height": 400,
+    "objectFit": "cover"
+  },
+  "box": {
+    "width": 150,
+    "height": 300
+  },
+  "expected": 600
+}

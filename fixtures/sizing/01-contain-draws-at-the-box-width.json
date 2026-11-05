@@ -1,0 +1,13 @@
+{
+  "description": "Shown whole: the picture is never wider than its box.",
+  "asset": {
+    "width": 960,
+    "height": 720,
+    "objectFit": "contain"
+  },
+  "box": {
+    "width": 300,
+    "height": 300
+  },
+  "expected": 300
+}

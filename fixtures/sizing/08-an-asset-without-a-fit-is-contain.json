@@ -1,0 +1,12 @@
+{
+  "description": "A response from before the fill carries no objectFit: contain.",
+  "asset": {
+    "width": 960,
+    "height": 720
+  },
+  "box": {
+    "width": 300,
+    "height": 300
+  },
+  "expected": 300
+}
